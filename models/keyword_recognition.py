@@ -7,6 +7,8 @@ class Keyword(nn.Module):
     def __init__(self, n_categories, n_mels=80):
         super().__init__()
         self.n_mels = n_mels
+        self.transforms = nn.Sequential(transforms.Resample(orig_freq=16000, new_freq=8000),
+                                        transforms.MelSpectrogram(n_mels=self.n_mels, sample_rate=8000))
 
         self.relu = nn.ReLU()
         self.conv1 = nn.Conv2d(1, 10, (1, 1))
@@ -23,8 +25,7 @@ class Keyword(nn.Module):
 
     def forward(self, x):
         # transform
-        x = transforms.Resample(orig_freq=16000, new_freq=8000)(x)
-        x = transforms.MelSpectrogram(n_mels=self.n_mels, sample_rate=8000)(x)
+        x = self.transforms(x)
         x = x.permute(0, 1, 3, 2)
 
         # extraction of local relations

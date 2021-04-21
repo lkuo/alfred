@@ -23,6 +23,8 @@ class Keyword(nn.Module):
         self.dense1 = nn.Linear(128, 64)
         self.dense2 = nn.Linear(64, n_categories)
 
+        self.tsfm = lambda q: q[:, q.shape[1] // 2]
+
     def forward(self, x):
         # transform
         x = self.transforms(x)
@@ -39,7 +41,8 @@ class Keyword(nn.Module):
         # long term dependencies
         x = x.squeeze()  # [batch_size(100), channel(1), spec_len(time, 41), n_mels(80)
         x, _ = self.blstm(x)
-        x_mid = x[:, x.shape[1] // 2]
+
+        x_mid = self.tsfm(x)
         query = self.fc(x_mid)
         query = query.unsqueeze(-1)
         att_score = torch.bmm(x, query)

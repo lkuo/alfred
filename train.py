@@ -16,7 +16,7 @@ torch.cuda.manual_seed(1)
 if __name__ == '__main__':
 
     batch_size = 100
-    learning_rate = 0.001
+    learning_rate = 0.01
 
     train_set = SpeechCommands('training')
     test_set = SpeechCommands('testing')

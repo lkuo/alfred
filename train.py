@@ -101,8 +101,6 @@ if __name__ == '__main__':
             output = model(data)
             loss = criterion(output, target)
 
-            # print(loss.item())
-
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()

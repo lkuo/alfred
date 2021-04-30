@@ -8,12 +8,13 @@ class Keyword(nn.Module):
         super().__init__()
         self.n_mels = n_mels
         self.transforms = nn.Sequential(transforms.Resample(orig_freq=16000, new_freq=8000),
-                                        transforms.MelSpectrogram(n_mels=self.n_mels, sample_rate=8000))
+                                        transforms.MelSpectrogram(n_mels=self.n_mels, sample_rate=8000),
+                                        transforms.AmplitudeToDB())
 
         self.relu = nn.ReLU()
-        self.conv1 = nn.Conv2d(1, 10, (1, 1))
+        self.conv1 = nn.Conv2d(1, 10, (5, 1))
         self.norm1 = nn.BatchNorm2d(10)
-        self.conv2 = nn.Conv2d(10, 1, (1, 1))
+        self.conv2 = nn.Conv2d(10, 1, (5, 1))
         self.norm2 = nn.BatchNorm2d(1)
 
         self.blstm = nn.LSTM(n_mels, 64, batch_first=True, bidirectional=True)

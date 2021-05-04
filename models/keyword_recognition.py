@@ -36,10 +36,10 @@ class Keyword(nn.Module):
         # extraction of local relations
         x = self.conv1(x)
         x = self.relu(x)
-        x = self.norm1(x)
+        # x = self.norm1(x)
         x = self.conv2(x)
         x = self.relu(x)
-        x = self.norm2(x)
+        # x = self.norm2(x)
 
         # long term dependencies
         x = x.squeeze()  # [batch_size(100), channel(1), spec_len(time, 41), n_mels(80)

@@ -12,17 +12,19 @@ class Keyword(nn.Module):
                                         transforms.AmplitudeToDB())
 
         self.relu = nn.ReLU()
-        self.conv1 = nn.Conv2d(1, 10, (5, 1))
+        self.conv1 = nn.Conv2d(1, 10, (1, 1))
         self.norm1 = nn.BatchNorm2d(10)
-        self.conv2 = nn.Conv2d(10, 1, (5, 1))
+        self.conv2 = nn.Conv2d(10, 1, (1, 1))
         self.norm2 = nn.BatchNorm2d(1)
 
-        self.blstm = nn.LSTM(n_mels, 64, batch_first=True, bidirectional=True)
+        self.blstm1 = nn.LSTM(n_mels, 64, batch_first=True, bidirectional=True)
+        self.blstm2 = nn.LSTM(128, 64, batch_first=True, bidirectional=True)
         self.fc = nn.Linear(128, 128)
         self.soft_max = nn.Softmax(dim=1)
 
         self.dense1 = nn.Linear(128, 64)
-        self.dense2 = nn.Linear(64, n_categories)
+        self.dense2 = nn.Linear(64, 32)
+        self.dense3 = nn.Linear(32, n_categories)
 
         self.tsfm = lambda q: q[:, q.shape[1] // 2]
 
@@ -41,7 +43,8 @@ class Keyword(nn.Module):
 
         # long term dependencies
         x = x.squeeze()  # [batch_size(100), channel(1), spec_len(time, 41), n_mels(80)
-        x, _ = self.blstm(x)
+        x, _ = self.blstm1(x)
+        x, _ = self.blstm2(x)
 
         x_mid = self.tsfm(x)
         query = self.fc(x_mid)
@@ -55,6 +58,7 @@ class Keyword(nn.Module):
         output = self.dense1(att_vector)
         output = self.relu(output)
         output = self.dense2(output)
+        output = self.dense3(output)
         output = self.soft_max(output)
 
         return output

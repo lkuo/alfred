@@ -12,10 +12,10 @@ class Keyword(nn.Module):
                                         transforms.AmplitudeToDB())
 
         self.relu = nn.ReLU()
-        self.conv1 = nn.Conv2d(1, 10, (1, 1))
-        # self.norm1 = nn.BatchNorm2d(10)
-        self.conv2 = nn.Conv2d(10, 1, (1, 1))
-        # self.norm2 = nn.BatchNorm2d(1)
+        self.conv1 = nn.Conv2d(1, 10, (5, 1), padding=(2, 0))
+        self.norm1 = nn.BatchNorm2d(10)
+        self.conv2 = nn.Conv2d(10, 1, (5, 1), padding=(2, 0))
+        self.norm2 = nn.BatchNorm2d(1)
 
         self.blstm1 = nn.LSTM(n_mels, 64, batch_first=True, bidirectional=True)
         self.blstm2 = nn.LSTM(128, 64, batch_first=True, bidirectional=True)
@@ -36,10 +36,10 @@ class Keyword(nn.Module):
         # extraction of local relations
         x = self.conv1(x)
         x = self.relu(x)
-        # x = self.norm1(x)
+        x = self.norm1(x)
         x = self.conv2(x)
         x = self.relu(x)
-        # x = self.norm2(x)
+        x = self.norm2(x)
 
         # long term dependencies
         x = x.squeeze()  # [batch_size(100), channel(1), spec_len(time, 41), n_mels(80)
@@ -59,6 +59,7 @@ class Keyword(nn.Module):
         output = self.relu(output)
         output = self.dense2(output)
         output = self.dense3(output)
-        output = self.soft_max(output)
+        # output = self.soft_max(output)
 
         return output
+

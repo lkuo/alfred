@@ -13,9 +13,9 @@ class Keyword(nn.Module):
 
         self.relu = nn.ReLU()
         self.conv1 = nn.Conv2d(1, 10, (1, 1))
-        self.norm1 = nn.BatchNorm2d(10)
+        # self.norm1 = nn.BatchNorm2d(10)
         self.conv2 = nn.Conv2d(10, 1, (1, 1))
-        self.norm2 = nn.BatchNorm2d(1)
+        # self.norm2 = nn.BatchNorm2d(1)
 
         self.blstm1 = nn.LSTM(n_mels, 64, batch_first=True, bidirectional=True)
         self.blstm2 = nn.LSTM(128, 64, batch_first=True, bidirectional=True)

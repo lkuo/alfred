@@ -59,7 +59,7 @@ class Keyword(nn.Module):
         output = self.relu(output)
         output = self.dense2(output)
         output = self.dense3(output)
-        # output = self.soft_max(output)
+        output = self.soft_max(output)
 
         return output
 

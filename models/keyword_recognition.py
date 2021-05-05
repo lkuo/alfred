@@ -59,7 +59,9 @@ class Keyword(nn.Module):
         output = self.relu(output)
         output = self.dense2(output)
         output = self.dense3(output)
-        output = self.soft_max(output)
+        # comment out below line make accuracy reaches 99%
+        # however keep it the accuracy never rises above 75%
+        # output = self.soft_max(output)
 
         return output
 

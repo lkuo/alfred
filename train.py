@@ -150,3 +150,4 @@ if __name__ == '__main__':
             train(model, epoch, log_interval)
             test(model, epoch)
             scheduler.step()
+        torch.save(model, 'model.pth')
